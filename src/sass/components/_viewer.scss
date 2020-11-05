@@ -1,0 +1,32 @@
+.viewer {
+    display: flex;
+    width: 100vw;
+    height: calc(100vh - 56px);
+
+    .toolbar {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        padding: 1rem;
+
+        .items {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+
+            textarea {
+                flex: 1;
+                resize: none;
+            }
+        }
+    }
+
+    .render {
+        flex: 2;
+        border-left: $border-width solid $border-color;
+
+        svg {
+            transform: rotate(180deg) scaleX(-1);
+        }
+    }
+}
