@@ -1,0 +1,28 @@
+@import url('https://fonts.googleapis.com/css2?family=Raleway:wght@300;500;700;900&display=swap');
+
+.message{
+    background-color: #76818E;
+    color :rgb(255, 255, 255);
+    font-family: Raleway;
+}
+
+.navbar{
+    font-family: Raleway;
+    background-color: pink;
+}
+
+.navbar-collapse{
+    flex-grow: 0.1;
+}
+.nav-link{
+    font-weight: bold;
+}
+
+.svg{
+    background-color: rgb(233, 232, 232);
+}
+
+.precision{
+    font-size: 15px;
+    color:grey;
+}

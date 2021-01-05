@@ -2,18 +2,18 @@
     <div class="viewer">
         <div class="toolbar">
             <div class="form-group">
-                <label for="width">Largeur</label>
+                <label for="width">Largeur du Conteneur :</label>
                 <input type="text" class="form-control" id="width" v-model="width">
             </div>
 
             <div class="form-group items">
-                <label for="items">Liste des blocs</label>
+                <label for="items">Liste des blocs : largeur x hauteur x quantité </br> <p class="precision">Retour à la ligne pour le bloc suivant</p> </label>
                 <textarea class="form-control" id="items" v-model="items"></textarea>
             </div>
         </div>
 
         <div class="render">
-            <svg width="100%" height="100%">
+            <svg class="svg" width="100%" height="100%">
                 <rect :x="block.fit.x" :y="block.fit.y" :width="block.w" :height="block.h" :fill="'#'+((1<<24)*Math.random()|0).toString(16)" :key="index" v-for="(block, index) in blocks" />
             </svg>
         </div>

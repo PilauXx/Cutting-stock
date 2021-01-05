@@ -129,7 +129,6 @@ var THREE = __webpack_require__(/*! three */ "./node_modules/three/build/three.m
       width: 100,
       depth: 100,
       items: '',
-      blah: [],
       scene: null
     };
   },
@@ -158,9 +157,9 @@ var THREE = __webpack_require__(/*! three */ "./node_modules/three/build/three.m
           });
         }
       });
-      this.render(blocks);
+      this.fit(blocks);
     },
-    render: function render(blocks) {
+    fit: function fit(blocks) {
       var bin = new BinPacking.Bin('Conteneur', this.width, 100000, this.depth, 100000);
       var packer = new BinPacking.Packer();
       packer.addBin(bin);
@@ -168,31 +167,22 @@ var THREE = __webpack_require__(/*! three */ "./node_modules/three/build/three.m
         packer.addItem(new BinPacking.Item("Item ".concat(index), block.w, block.h, block.d, 0));
       });
       packer.pack();
-      this.show(bin.items);
+      this.render(bin.items);
     },
-    show: function show(blocks) {
+    render: function render(blocks) {
       var _this = this;
 
-      var container = document.querySelector('.render');
+      var container = this.$el.querySelector('.render');
 
       if (this.scene) {
-        container.innerHTML = "";
+        container.innerHTML = '';
         this.scene = null;
-      } // create a Scene
+      }
 
-
-      this.scene = new THREE.Scene(); // Set the background color
-
-      this.scene.background = new THREE.Color('skyblue'); // Create a Camera
-
-      var fov = 35; // AKA Field of View
-
-      var aspect = container.clientWidth / container.clientHeight;
-      var near = 0.1; // the near clipping plane
-
-      var far = 100;
-      var camera = new THREE.PerspectiveCamera(fov, aspect, near, far);
-      camera.position.set(0, 0, 50);
+      this.scene = new THREE.Scene();
+      this.scene.background = new THREE.Color('skyblue');
+      var camera = new THREE.PerspectiveCamera(35, container.clientWidth / container.clientHeight, 0.1, 100);
+      camera.position.set(0, 0, 20);
       var renderer = new THREE.WebGLRenderer();
       renderer.setSize(container.clientWidth, container.clientHeight);
       renderer.setPixelRatio(window.devicePixelRatio);
@@ -200,20 +190,27 @@ var THREE = __webpack_require__(/*! three */ "./node_modules/three/build/three.m
       blocks.forEach(function (block) {
         var color = new THREE.Color(0xffffff);
         color.setHex(Math.random() * 0xffffff);
-        var geometry = new THREE.BoxGeometry(block.width, block.height, block.depth);
+        var geometry = new THREE.BoxGeometry(block.w, block.h, block.d);
         var material = new THREE.MeshBasicMaterial({
           color: color
         });
-        var mesh = new THREE.Mesh(geometry, material);
-        mesh.rotation.x += 0.5;
-        mesh.rotation.y += 0.5;
-        mesh.translateX(block.position[0]);
-        mesh.translateY(block.position[1]);
-        mesh.translateZ(block.position[2]);
+        var cube = new THREE.Mesh(geometry, material);
+        cube.translateX(block.position[0]);
+        cube.translateY(block.position[1]);
+        cube.translateZ(block.position[2]); // Temporary
 
-        _this.scene.add(mesh);
+        cube.rotation.x += 0.5;
+        cube.rotation.y += 0.5;
+
+        _this.scene.add(cube);
       });
-      renderer.render(this.scene, camera);
+
+      var animate = function animate() {
+        requestAnimationFrame(animate);
+        renderer.render(_this.scene, camera);
+      };
+
+      animate();
     }
   }
 });
@@ -231,6 +228,7 @@ var THREE = __webpack_require__(/*! three */ "./node_modules/three/build/three.m
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _Viewer__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Viewer */ "./src/js/components/Viewer.vue");
 /* harmony import */ var _3DViewer__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./3DViewer */ "./src/js/components/3DViewer.vue");
+//
 //
 //
 //
@@ -70140,7 +70138,7 @@ var render = function() {
     "div",
     { staticClass: "app" },
     [
-      _c("nav", { staticClass: "navbar navbar-expand navbar-light bg-light" }, [
+      _c("nav", { staticClass: "navbar navbar-expand navbar-light" }, [
         _c(
           "a",
           {
@@ -70152,7 +70150,7 @@ var render = function() {
               }
             }
           },
-          [_vm._v("Cutting Stock")]
+          [_vm._v("Découpe Optimale")]
         ),
         _vm._v(" "),
         _vm._m(0),
@@ -70174,23 +70172,7 @@ var render = function() {
                       }
                     }
                   },
-                  [_vm._v("2-Dimensions")]
-                )
-              ]),
-              _vm._v(" "),
-              _c("li", { staticClass: "nav-item" }, [
-                _c(
-                  "a",
-                  {
-                    staticClass: "nav-link",
-                    attrs: { href: "#" },
-                    on: {
-                      click: function($event) {
-                        return _vm.setMode(2)
-                      }
-                    }
-                  },
-                  [_vm._v("3-Dimensions")]
+                  [_vm._v(" 2D ")]
                 )
               ])
             ])
@@ -70200,11 +70182,15 @@ var render = function() {
       _vm._v(" "),
       _vm.mode === 1
         ? _c("viewer")
-        : _vm.mode === 2
-        ? _c("Viewer3D")
         : _c("div", { staticClass: "container-fluid py-3" }, [
-            _c("div", { staticClass: "alert alert-info text-center" }, [
-              _vm._v("Veuillez sélectionner un démonstrateur ci-dessus.")
+            _c("div", { staticClass: "alert alert-info text-center message" }, [
+              _vm._v("\n        Bienvenu sur 'Découpe Optimale' ! "),
+              _c("br"),
+              _vm._v(
+                "\n        Choisissez le type de dimension que vous souhaitez découper "
+              ),
+              _c("br"),
+              _vm._v("\n        (la 3D est non disponible pour l'instant) ")
             ])
           ])
     ],
@@ -70257,7 +70243,9 @@ var render = function() {
   return _c("div", { staticClass: "viewer" }, [
     _c("div", { staticClass: "toolbar" }, [
       _c("div", { staticClass: "form-group" }, [
-        _c("label", { attrs: { for: "width" } }, [_vm._v("Largeur")]),
+        _c("label", { attrs: { for: "width" } }, [
+          _vm._v("Largeur du Conteneur :")
+        ]),
         _vm._v(" "),
         _c("input", {
           directives: [
@@ -70283,7 +70271,7 @@ var render = function() {
       ]),
       _vm._v(" "),
       _c("div", { staticClass: "form-group items" }, [
-        _c("label", { attrs: { for: "items" } }, [_vm._v("Liste des blocs")]),
+        _vm._m(0),
         _vm._v(" "),
         _c("textarea", {
           directives: [
@@ -70312,7 +70300,7 @@ var render = function() {
     _c("div", { staticClass: "render" }, [
       _c(
         "svg",
-        { attrs: { width: "100%", height: "100%" } },
+        { staticClass: "svg", attrs: { width: "100%", height: "100%" } },
         _vm._l(_vm.blocks, function(block, index) {
           return _c("rect", {
             key: index,
@@ -70330,7 +70318,21 @@ var render = function() {
     ])
   ])
 }
-var staticRenderFns = []
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("label", { attrs: { for: "items" } }, [
+      _vm._v("Liste des blocs : largeur x hauteur x quantité "),
+      _c("br"),
+      _vm._v(" "),
+      _c("p", { staticClass: "precision" }, [
+        _vm._v("Retour à la ligne pour le bloc suivant")
+      ])
+    ])
+  }
+]
 render._withStripped = true
 
 
@@ -82831,8 +82833,8 @@ __webpack_require__.r(__webpack_exports__);
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! C:\Users\m_lie\OneDrive\Bureau\M1_MIAGE\Recherche\cutting-stock\src\js\app.js */"./src/js/app.js");
-module.exports = __webpack_require__(/*! C:\Users\m_lie\OneDrive\Bureau\M1_MIAGE\Recherche\cutting-stock\src\sass\app.scss */"./src/sass/app.scss");
+__webpack_require__(/*! C:\Users\Laura\Documents\Master\RD\Cutting-stock\src\js\app.js */"./src/js/app.js");
+module.exports = __webpack_require__(/*! C:\Users\Laura\Documents\Master\RD\Cutting-stock\src\sass\app.scss */"./src/sass/app.scss");
 
 
 /***/ })

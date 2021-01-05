@@ -1,23 +1,24 @@
 <template>
     <div class="app">
-        <nav class="navbar navbar-expand navbar-light bg-light">
-            <a href="#" class="navbar-brand" @click="setMode(0)">Cutting Stock</a>
+        <nav class="navbar navbar-expand navbar-light">
+            <a href="#" class="navbar-brand" @click="setMode(0)">Découpe Optimale</a>
             <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
 
             <div class="collapse navbar-collapse" id="navbar">
                 <ul class="navbar-nav ml-auto">
-                    <li class="nav-item"><a href="#" class="nav-link" @click="setMode(1)">2-Dimensions</a></li>
-                    <li class="nav-item"><a href="#" class="nav-link" @click="setMode(2)">3-Dimensions</a></li>
+                    <li class="nav-item"><a href="#" class="nav-link" @click="setMode(1)"> 2D </a></li>
                 </ul>
             </div>
         </nav>
 
         <viewer v-if="mode === 1"></viewer>
-        <Viewer3D v-else-if="mode === 2"></Viewer3D>
         <div class="container-fluid py-3" v-else>
-            <div class="alert alert-info text-center">Veuillez sélectionner un démonstrateur ci-dessus.</div>
+            <div class="alert alert-info text-center message">
+            Bienvenu sur 'Découpe Optimale' ! </br>
+            Choisissez le type de dimension que vous souhaitez découper </br>
+            (la 3D est non disponible pour l'instant) </div>
         </div>
     </div>
 </template>
