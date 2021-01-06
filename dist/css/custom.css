@@ -1,5 +1,9 @@
 @import url('https://fonts.googleapis.com/css2?family=Raleway:wght@300;500;700;900&display=swap');
 
+body{
+    background-color: rgb(233, 232, 232);
+}
+
 .message{
     background-color: #76818E;
     color :rgb(255, 255, 255);
@@ -20,9 +24,23 @@
 
 .svg{
     background-color: rgb(233, 232, 232);
+    padding: 20px;
 }
 
 .precision{
     font-size: 15px;
     color:grey;
+}
+
+.viewer{
+    display: flex;
+    flex-direction: row-reverse;
+}
+
+.toolbar{
+    display: block;
+    background-color: rgb(164, 248, 220);
+    border-radius: 15px;
+    margin:20px;
+    border : 2px solid grey;
 }
